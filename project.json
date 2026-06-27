@@ -1,0 +1,23 @@
+{
+  "overview": "Enterprise Multi-Agent Research Assistant Engine — an AI-powered research platform with streaming chat, interactive agent workflow visualization, project-based workspaces, document management, and analytics dashboards.",
+  "features": [
+    "Multi-agent workflow visualization with React Flow",
+    "Streaming AI chat with HTTP outcalls to external LLMs",
+    "Project-based research workspaces",
+    "Document upload and keyword indexing",
+    "Interactive analytics dashboard",
+    "Role-based access control",
+    "Dark/light theme with glassmorphism UI"
+  ],
+  "category": "productivity",
+  "tags": [
+    "ai",
+    "research",
+    "multi-agent",
+    "enterprise",
+    "streaming",
+    "dashboard",
+    "glassmorphism"
+  ],
+  "last_updated": "2026-06-27T07:05:58.281Z"
+}

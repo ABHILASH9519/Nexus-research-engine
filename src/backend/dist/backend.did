@@ -1,0 +1,332 @@
+type _ImmutableObjectStorageRefillResult = 
+ record {
+   success: opt bool;
+   topped_up_amount: opt nat;
+ };
+type _ImmutableObjectStorageRefillInformation = record {
+                                                  proposed_top_up_amount:
+                                                   opt nat;};
+type _ImmutableObjectStorageCreateCertificateResult = 
+ record {
+   blob_hash: text;
+   method: text;
+ };
+type UserRole = 
+ variant {
+   admin;
+   guest;
+   user;
+ };
+type UserId = principal;
+type TransformationOutput = 
+ record {
+   body: blob;
+   headers: vec HttpHeader;
+   status: nat;
+ };
+type TransformationInput = 
+ record {
+   context: blob;
+   response: HttpRequestResult;
+ };
+type Timestamp = nat;
+type SearchResult = 
+ record {
+   documentId: DocumentId;
+   score: nat;
+   snippet: text;
+   title: text;
+ };
+type Result = 
+ variant {
+   err: Error;
+   ok;
+ };
+type ResearchTrend = 
+ record {
+   avgAccuracy: float64;
+   date: text;
+   requestCount: nat;
+   tokenUsage: nat;
+ };
+type ProjectSummary = 
+ record {
+   createdAt: Timestamp;
+   description: text;
+   id: ProjectId;
+   name: text;
+   status: ProjectStatus;
+   updatedAt: Timestamp;
+ };
+type ProjectStatus = 
+ variant {
+   active;
+   archived;
+ };
+type ProjectId = nat;
+type Project = 
+ record {
+   createdAt: Timestamp;
+   description: text;
+   id: ProjectId;
+   name: text;
+   owner: UserId;
+   status: ProjectStatus;
+   updatedAt: Timestamp;
+ };
+type MessageRole = 
+ variant {
+   assistant;
+   system;
+   user;
+ };
+type MessageId = nat;
+type HttpRequestResult = 
+ record {
+   body: blob;
+   headers: vec HttpHeader;
+   status: nat;
+ };
+type HttpHeader = 
+ record {
+   name: text;
+   value: text;
+ };
+type ExternalBlob = blob;
+type Error = 
+ variant {
+   AmbiguousAttribute: record {
+                         field: text;
+                         sources: vec text;
+                       };
+   FrontendOriginMismatch: record {
+                             expected: vec text;
+                             got: text;
+                           };
+   FrontendOriginsNotConfigured;
+   MalformedCandid;
+   MissingField: text;
+   MixedSsoSources: record {
+                      otherKeys: vec text;
+                      ssoKeys: vec text;
+                    };
+   NoAttributes;
+   Stale: record {ageNs: nat;};
+   UnknownNonce;
+   UntrustedSsoSource: record {domain: text;};
+ };
+type DocumentType = 
+ variant {
+   csv;
+   docx;
+   markdown;
+   pdf;
+   txt;
+ };
+type DocumentMetadata = 
+ record {
+   createdAt: Timestamp;
+   docType: DocumentType;
+   filename: text;
+   id: DocumentId;
+   owner: UserId;
+   projectId: ProjectId;
+   title: text;
+   updatedAt: Timestamp;
+ };
+type DocumentId = nat;
+type Document = 
+ record {
+   blobRef: blob;
+   content: text;
+   createdAt: Timestamp;
+   docType: DocumentType;
+   filename: text;
+   id: DocumentId;
+   keywords: vec text;
+   owner: UserId;
+   projectId: ProjectId;
+   title: text;
+   updatedAt: Timestamp;
+ };
+type DashboardSummary = 
+ record {
+   accuracyScore: float64;
+   activeAgents: nat;
+   avgLatencyMs: nat;
+   completionPercentage: float64;
+   memoryUtilization: nat;
+   tokenConsumption: nat;
+   topAgents: vec AgentPerformance;
+   totalRequests: nat;
+   trends: vec ResearchTrend;
+ };
+type Citation = 
+ record {
+   documentId: DocumentId;
+   snippet: text;
+   title: text;
+ };
+type ChatMessage = 
+ record {
+   citations: vec Citation;
+   content: text;
+   createdAt: Timestamp;
+   id: MessageId;
+   projectId: ProjectId;
+   role: MessageRole;
+ };
+type AnalyticsSnapshot = 
+ record {
+   accuracyScore: float64;
+   activeAgents: nat;
+   avgLatencyMs: nat;
+   completionPercentage: float64;
+   memoryUtilization: nat;
+   timestamp: Timestamp;
+   tokenConsumption: nat;
+   totalRequests: nat;
+ };
+type AgentType = 
+ variant {
+   citation;
+   knowledge;
+   memory;
+   planner;
+   retrieval;
+   search;
+   summarization;
+   validation;
+ };
+type AgentStep = 
+ record {
+   agent: AgentType;
+   completedAt: opt Timestamp;
+   confidence: opt float64;
+   error: opt text;
+   input: text;
+   output: text;
+   startedAt: opt Timestamp;
+   status: AgentStatus;
+   tokensUsed: opt nat;
+ };
+type AgentStatus = 
+ variant {
+   completed;
+   failed;
+   pending;
+   retrying;
+   running;
+ };
+type AgentRunId = nat;
+type AgentRun = 
+ record {
+   createdAt: Timestamp;
+   finalAnswer: opt text;
+   id: AgentRunId;
+   projectId: ProjectId;
+   "query": text;
+   status: AgentStatus;
+   steps: vec AgentStep;
+   updatedAt: Timestamp;
+ };
+type AgentPerformance = 
+ record {
+   agentType: text;
+   avgLatencyMs: nat;
+   runsToday: nat;
+   successRate: float64;
+   tokensConsumed: nat;
+ };
+type AgentMetrics = 
+ record {
+   agent: AgentType;
+   avgConfidence: float64;
+   avgDurationMs: nat;
+   successRate: float64;
+   totalRuns: nat;
+   totalTokens: nat;
+ };
+type AIProvider = 
+ variant {
+   anthropic;
+   custom: text;
+   gemini;
+   openai;
+ };
+type AIConfigPublic = 
+ record {
+   apiEndpoint: text;
+   maxTokens: nat;
+   modelId: text;
+   provider: AIProvider;
+   temperature: float64;
+   updatedAt: nat;
+ };
+type AIConfig = 
+ record {
+   apiEndpoint: text;
+   apiKey: text;
+   maxTokens: nat;
+   modelId: text;
+   provider: AIProvider;
+   temperature: float64;
+   updatedAt: nat;
+ };
+service : {
+  __accessControlState: () -> (reserved) query;
+  __agentRunIdSeq: () -> (reserved) query;
+  __agentRuns: () -> (reserved) query;
+  __aiConfig: () -> (reserved) query;
+  __analyticsSnapshots: (io: opt nat, count: opt nat) ->
+   (vec AnalyticsSnapshot) query;
+  __chatMessages: (io: opt nat, count: opt nat) -> (vec ChatMessage) query;
+  __documentIdSeq: () -> (reserved) query;
+  __documents: () -> (reserved) query;
+  __messageIdSeq: () -> (reserved) query;
+  __projectIdSeq: () -> (reserved) query;
+  __projects: () -> (reserved) query;
+  _immutableObjectStorageBlobsAreLive: (hashes: vec blob) -> (vec bool) query;
+  _immutableObjectStorageBlobsToDelete: () -> (vec blob) query;
+  _immutableObjectStorageConfirmBlobDeletion: (blobs: vec blob) -> ();
+  _immutableObjectStorageCreateCertificate: (blobHash: text) ->
+   (_ImmutableObjectStorageCreateCertificateResult);
+  _immutableObjectStorageRefillCashier: (refillInformation:
+   opt _ImmutableObjectStorageRefillInformation) ->
+   (_ImmutableObjectStorageRefillResult);
+  _immutableObjectStorageUpdateGatewayPrincipals: () -> ();
+  _initialize_access_control: () -> ();
+  _internet_identity_sign_in_finish: () -> (Result);
+  _internet_identity_sign_in_start: () -> (blob);
+  archiveProject: (id: ProjectId) -> (opt Project);
+  assignCallerUserRole: (user: principal, role: UserRole) -> ();
+  clearChatHistory: (projectId: ProjectId) -> ();
+  createProject: (name: text, description: text) -> (Project);
+  deleteDocument: (id: DocumentId) -> (bool);
+  deleteProject: (id: ProjectId) -> (bool);
+  duplicateProject: (id: ProjectId) -> (opt Project);
+  getAIConfig: () -> (AIConfigPublic) query;
+  getAgentMetrics: () -> (vec AgentMetrics) query;
+  getAgentRun: (id: AgentRunId) -> (opt AgentRun) query;
+  getCallerUserRole: () -> (UserRole) query;
+  getChatHistory: (projectId: ProjectId) -> (vec ChatMessage) query;
+  getDashboardSummary: () -> (DashboardSummary) query;
+  getDocument: (id: DocumentId) -> (opt Document) query;
+  getProject: (id: ProjectId) -> (opt Project) query;
+  isAIConfigured: () -> (bool) query;
+  isCallerAdmin: () -> (bool) query;
+  listAgentRuns: (projectId: ProjectId) -> (vec AgentRun) query;
+  listDocuments: (projectId: ProjectId) -> (vec DocumentMetadata) query;
+  listProjects: () -> (vec ProjectSummary) query;
+  recordAnalytics: (snapshot: AnalyticsSnapshot) -> ();
+  searchDocuments: (projectId: ProjectId, "query": text) ->
+   (vec SearchResult) query;
+  sendChatMessage: (projectId: ProjectId, content: text) -> (ChatMessage);
+  setAIConfig: (config: AIConfig) -> ();
+  startAgentRun: (projectId: ProjectId, "query": text) -> (AgentRun);
+  transform: (raw: TransformationInput) -> (TransformationOutput) query;
+  updateProject: (id: ProjectId, name: text, description: text) ->
+   (opt Project);
+  uploadDocument: (projectId: ProjectId, title: text, filename: text,
+   docType: DocumentType, blobRef: ExternalBlob, content: text) -> (Document);
+}

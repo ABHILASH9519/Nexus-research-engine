@@ -1,0 +1,289 @@
+// Version: 4.0.0
+type AIConfig__626809290 =
+  {
+    apiEndpoint : Text;
+    apiKey : Text;
+    maxTokens : Nat;
+    modelId : Text;
+    provider : AIProvider__6280322;
+    temperature : Float;
+    updatedAt : Nat
+  };
+type AIProvider__6280322 = {#anthropic; #custom : Text; #gemini; #openai};
+type AgentRunId__326130097 = Nat;
+type AgentRunId__584413300 = AgentRunId__326130097;
+type AgentRun__661823720 =
+  {
+    createdAt : Timestamp__301639476;
+    finalAnswer : ?Text;
+    id : AgentRunId__584413300;
+    projectId : ProjectId__661817938;
+    query_ : Text;
+    status : AgentStatus__682045318;
+    steps : [AgentStep__445461780];
+    updatedAt : Timestamp__301639476
+  };
+type AgentStatus__682045318 =
+  {#completed; #failed; #pending; #retrying; #running};
+type AgentStep__445461780 =
+  {
+    agent : AgentType__593675116;
+    completedAt : ?Timestamp__301639476;
+    confidence : ?Float;
+    error : ?Text;
+    input : Text;
+    output : Text;
+    startedAt : ?Timestamp__301639476;
+    status : AgentStatus__682045318;
+    tokensUsed : ?Nat
+  };
+type AgentType__593675116 =
+  {
+    #citation;
+    #knowledge;
+    #memory;
+    #planner;
+    #retrieval;
+    #search;
+    #summarization;
+    #validation
+  };
+type AnalyticsSnapshot__226691284 =
+  {
+    accuracyScore : Float;
+    activeAgents : Nat;
+    avgLatencyMs : Nat;
+    completionPercentage : Float;
+    memoryUtilization : Nat;
+    timestamp : Timestamp__301639476;
+    tokenConsumption : Nat;
+    totalRequests : Nat
+  };
+type ChatMessage__559859432 =
+  {
+    citations : [Citation__788453021];
+    content : Text;
+    createdAt : Timestamp__301639476;
+    id : MessageId__810287564;
+    projectId : ProjectId__661817938;
+    role : MessageRole__512297421
+  };
+type Citation__788453021 =
+  {documentId : DocumentId__939245584; snippet : Text; title : Text};
+type Data__80296667<K, V> =
+  {var count : Nat__1040412405; kvs : [var ?(K, V)]};
+type DocumentId__668020087 = DocumentId__939245584;
+type DocumentId__939245584 = Nat;
+type DocumentType__1022545476 = {#csv; #docx; #markdown; #pdf; #txt};
+type Document__57377506 =
+  {
+    blobRef : Blob;
+    content : Text;
+    createdAt : Timestamp__301639476;
+    docType : DocumentType__1022545476;
+    filename : Text;
+    id : DocumentId__668020087;
+    keywords : [Text];
+    owner : UserId__158757552;
+    projectId : ProjectId__661817938;
+    title : Text;
+    updatedAt : Timestamp__301639476
+  };
+type Internal__41346355<K, V> =
+  {children : [var ?Node__1000929467<K, V>]; data : Data__80296667<K, V>};
+type Leaf__712614010<K, V> = {data : Data__80296667<K, V>};
+type List__529703492<T> =
+  {
+    var blockIndex : Nat__1040412405;
+    var blocks : [var [var ?T]];
+    var elementIndex : Nat__1040412405
+  };
+type List__560604548<T> = List__529703492<T>;
+type Map__222667396<K, V> = Map__912772452<K, V>;
+type Map__709709801<K, V> =
+  {var root : Node__1000929467<K, V>; var size : Nat__1040412405};
+type Map__912772452<K, V> = Map__709709801<K, V>;
+type MessageId__520745259 = Nat;
+type MessageId__810287564 = MessageId__520745259;
+type MessageRole__512297421 = {#assistant; #system_; #user};
+type Nat__1040412405 = Nat__920180692;
+type Nat__920180692 = Nat;
+type NewActor__431803801 =
+  {
+    accessControlState :
+      {
+        var adminAssigned : Bool;
+        userRoles : Map__222667396<Principal, {#admin; #guest; #user}>
+      };
+    agentRunIdSeq : {var value : Nat};
+    agentRuns :
+      Map__222667396<Nat,
+                      {
+                        createdAt : Nat;
+                        finalAnswer : ?Text;
+                        id : Nat;
+                        projectId : Nat;
+                        query_ : Text;
+                        status :
+                          {
+                            #completed;
+                            #failed;
+                            #pending;
+                            #retrying;
+                            #running
+                          };
+                        steps :
+                          [{
+                             agent :
+                               {
+                                 #citation;
+                                 #knowledge;
+                                 #memory;
+                                 #planner;
+                                 #retrieval;
+                                 #search;
+                                 #summarization;
+                                 #validation
+                               };
+                             completedAt : ?Nat;
+                             confidence : ?Float;
+                             error : ?Text;
+                             input : Text;
+                             output : Text;
+                             startedAt : ?Nat;
+                             status :
+                               {
+                                 #completed;
+                                 #failed;
+                                 #pending;
+                                 #retrying;
+                                 #running
+                               };
+                             tokensUsed : ?Nat
+                           }];
+                        updatedAt : Nat
+                      }>;
+    aiConfig :
+      {
+        var value :
+          {
+            apiEndpoint : Text;
+            apiKey : Text;
+            maxTokens : Nat;
+            modelId : Text;
+            provider : {#anthropic; #custom : Text; #gemini; #openai};
+            temperature : Float;
+            updatedAt : Nat
+          }
+      };
+    analyticsSnapshots :
+      List__560604548<{
+                        accuracyScore : Float;
+                        activeAgents : Nat;
+                        avgLatencyMs : Nat;
+                        completionPercentage : Float;
+                        memoryUtilization : Nat;
+                        timestamp : Nat;
+                        tokenConsumption : Nat;
+                        totalRequests : Nat
+                      }>;
+    chatMessages :
+      List__560604548<{
+                        citations :
+                          [{documentId : Nat; snippet : Text; title : Text}];
+                        content : Text;
+                        createdAt : Nat;
+                        id : Nat;
+                        projectId : Nat;
+                        role : {#assistant; #system_; #user}
+                      }>;
+    documentIdSeq : {var value : Nat};
+    documents :
+      Map__222667396<Nat,
+                      {
+                        blobRef : Blob;
+                        content : Text;
+                        createdAt : Nat;
+                        docType : {#csv; #docx; #markdown; #pdf; #txt};
+                        filename : Text;
+                        id : Nat;
+                        keywords : [Text];
+                        owner : Principal;
+                        projectId : Nat;
+                        title : Text;
+                        updatedAt : Nat
+                      }>;
+    messageIdSeq : {var value : Nat};
+    projectIdSeq : {var value : Nat};
+    projects :
+      Map__222667396<Nat,
+                      {
+                        createdAt : Nat;
+                        description : Text;
+                        id : Nat;
+                        name : Text;
+                        owner : Principal;
+                        status : {#active; #archived};
+                        updatedAt : Nat
+                      }>
+  };
+type Node__1000929467<K, V> =
+  {#internal : Internal__41346355<K, V>; #leaf : Leaf__712614010<K, V>};
+type OldActor__711550645 = {};
+type ProjectId__661817938 = Nat;
+type ProjectStatus__886440159 = {#active; #archived};
+type Project__614212307 =
+  {
+    createdAt : Timestamp__301639476;
+    description : Text;
+    id : ProjectId__661817938;
+    name : Text;
+    owner : UserId__158757552;
+    status : ProjectStatus__886440159;
+    updatedAt : Timestamp__301639476
+  };
+type Timestamp__301639476 = Nat;
+type UserId__158757552 = Principal;
+type UserRole__686137147 = {#admin; #guest; #user};
+{
+  "20250627_000000" : (_old : OldActor__711550645) -> NewActor__431803801
+}
+actor  {
+  stable accessControlState :
+    {
+      var adminAssigned : Bool;
+      userRoles : Map__222667396<Principal, UserRole__686137147>
+    };
+  stable agentRunIdSeq : {var value : AgentRunId__584413300};
+  stable agentRuns :
+    {
+      var root : Node__1000929467<AgentRunId__584413300, AgentRun__661823720>;
+      var size : Nat__1040412405
+    };
+  stable aiConfig : {var value : AIConfig__626809290};
+  stable analyticsSnapshots :
+    {
+      var blockIndex : Nat__1040412405;
+      var blocks : [var [var ?AnalyticsSnapshot__226691284]];
+      var elementIndex : Nat__1040412405
+    };
+  stable chatMessages :
+    {
+      var blockIndex : Nat__1040412405;
+      var blocks : [var [var ?ChatMessage__559859432]];
+      var elementIndex : Nat__1040412405
+    };
+  stable documentIdSeq : {var value : DocumentId__668020087};
+  stable documents :
+    {
+      var root : Node__1000929467<DocumentId__668020087, Document__57377506>;
+      var size : Nat__1040412405
+    };
+  stable messageIdSeq : {var value : MessageId__810287564};
+  stable projectIdSeq : {var value : ProjectId__661817938};
+  stable projects :
+    {
+      var root : Node__1000929467<ProjectId__661817938, Project__614212307>;
+      var size : Nat__1040412405
+    }
+};
