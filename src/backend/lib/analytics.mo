@@ -77,8 +77,8 @@ module {
     let count = snapshots.size();
     let latest = snapshots[snapshots.size() - 1];
 
-    // Build daily trends from snapshots grouped by date
-    // Since we don't have real dates, group by timestamp / 86400000000000 (nanoseconds per day)
+    // Build daily trends from snapshots grouped by date.
+    // Timestamps are nanoseconds, so each day contains 86,400,000,000,000 ns.
     let dayNanos : Nat = 86400000000000;
     var trendMap : [(Text, Analytics.ResearchTrend)] = [];
 
@@ -86,22 +86,25 @@ module {
       let dayIndex = s.timestamp / dayNanos;
       let dateKey = dayIndex.toText();
 
-      // Find existing trend or create new one
-      let existing = trendMap.find(
-        func((key, _)) { key == dateKey },
-      );
-
-      switch (existing) {
+      switch (trendMap.find(func((key, _)) { key == dateKey })) {
         case (?(_, trend)) {
-          let updatedTrend = {
+          let combinedRequests = trend.requestCount + s.totalRequests;
+          let combinedAccuracy = if (combinedRequests == 0) {
+            trend.avgAccuracy;
+          } else {
+            (trend.avgAccuracy * trend.requestCount.toFloat()
+              + s.accuracyScore * s.totalRequests.toFloat())
+              / Nat.toFloat(combinedRequests);
+          };
+          let updatedTrend : Analytics.ResearchTrend = {
             date = trend.date;
-            requestCount = trend.requestCount + s.totalRequests;
+            requestCount = combinedRequests;
             tokenUsage = trend.tokenUsage + s.tokenConsumption;
-            avgAccuracy = (trend.avgAccuracy * trend.requestCount.toFloat() + s.accuracyScore * s.totalRequests.toFloat()) / Nat.toFloat(trend.requestCount + s.totalRequests);
+            avgAccuracy = combinedAccuracy;
           };
           trendMap := trendMap.map<(Text, Analytics.ResearchTrend), (Text, Analytics.ResearchTrend)>(
-            func((k, t)) {
-              if (k == dateKey) { (k, updatedTrend) } else { (k, t) };
+            func((key, value)) {
+              if (key == dateKey) { (key, updatedTrend) } else { (key, value) };
             },
           );
         };
@@ -119,9 +122,7 @@ module {
       };
     };
 
-    let trends = trendMap.map(
-      func((_, t)) { t },
-    );
+    let trends = trendMap.map(func((_, trend)) { trend });
 
     {
       totalRequests;
@@ -131,7 +132,7 @@ module {
       completionPercentage = totalCompletion / count.toFloat();
       memoryUtilization = totalMemory / count;
       tokenConsumption = totalTokens;
-      topAgents = topAgents;
+      topAgents;
       trends;
     };
   };
