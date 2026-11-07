@@ -85,10 +85,10 @@ module {
               score += 1;
             };
           };
-          if (doc.content.contains(#text qw)) {
+          if (doc.content.toLower().contains(#text qw)) {
             score += 1;
           };
-          if (doc.title.contains(#text qw)) {
+          if (doc.title.toLower().contains(#text qw)) {
             score += 2;
           };
         };
