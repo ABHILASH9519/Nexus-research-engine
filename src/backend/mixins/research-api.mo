@@ -206,6 +206,14 @@ mixin (
     if (caller.isAnonymous()) {
       Runtime.trap("Unauthorized: Please sign in");
     };
+    switch (projects.get(projectId)) {
+      case (?p) {
+        if (p.owner != caller) {
+          Runtime.trap("Unauthorized: Not your project");
+        };
+      };
+      case null Runtime.trap("Project not found");
+    };
     let all = documents.values() |> _.toArray();
     let projectDocs = all.filter(func(d) { d.projectId == projectId });
     projectDocs.map<TypesDocuments.Document, TypesDocuments.DocumentMetadata>(DocumentsLib.toMetadata);
@@ -215,7 +223,15 @@ mixin (
     if (caller.isAnonymous()) {
       Runtime.trap("Unauthorized: Please sign in");
     };
-    documents.get(id);
+    switch (documents.get(id)) {
+      case (?doc) {
+        if (doc.owner != caller) {
+          Runtime.trap("Unauthorized: Not your document");
+        };
+        ?doc;
+      };
+      case null null;
+    };
   };
 
   public shared ({ caller }) func deleteDocument(id : TypesDocuments.DocumentId) : async Bool {
@@ -237,6 +253,14 @@ mixin (
   public query ({ caller }) func searchDocuments(projectId : TypesProjects.ProjectId, query_ : Text) : async [TypesDocuments.SearchResult] {
     if (caller.isAnonymous()) {
       Runtime.trap("Unauthorized: Please sign in");
+    };
+    switch (projects.get(projectId)) {
+      case (?p) {
+        if (p.owner != caller) {
+          Runtime.trap("Unauthorized: Not your project");
+        };
+      };
+      case null Runtime.trap("Project not found");
     };
     let all = documents.values() |> _.toArray();
     let projectDocs = all.filter(func(d) { d.projectId == projectId });
@@ -316,6 +340,14 @@ mixin (
     if (caller.isAnonymous()) {
       Runtime.trap("Unauthorized: Please sign in");
     };
+    switch (projects.get(projectId)) {
+      case (?p) {
+        if (p.owner != caller) {
+          Runtime.trap("Unauthorized: Not your project");
+        };
+      };
+      case null Runtime.trap("Project not found");
+    };
     let all = chatMessages.toArray();
     all.filter<TypesChat.ChatMessage>(func(m) { m.projectId == projectId });
   };
@@ -323,6 +355,14 @@ mixin (
   public shared ({ caller }) func clearChatHistory(projectId : TypesProjects.ProjectId) : async () {
     if (caller.isAnonymous()) {
       Runtime.trap("Unauthorized: Please sign in");
+    };
+    switch (projects.get(projectId)) {
+      case (?p) {
+        if (p.owner != caller) {
+          Runtime.trap("Unauthorized: Not your project");
+        };
+      };
+      case null Runtime.trap("Project not found");
     };
     let all = chatMessages.toArray();
     chatMessages.clear();
@@ -450,12 +490,33 @@ mixin (
     if (caller.isAnonymous()) {
       Runtime.trap("Unauthorized: Please sign in");
     };
-    agentRuns.get(id);
+    switch (agentRuns.get(id)) {
+      case (?run) {
+        switch (projects.get(run.projectId)) {
+          case (?p) {
+            if (p.owner != caller) {
+              Runtime.trap("Unauthorized: Not your project");
+            };
+          };
+          case null Runtime.trap("Project not found");
+        };
+        ?run;
+      };
+      case null null;
+    };
   };
 
   public query ({ caller }) func listAgentRuns(projectId : TypesProjects.ProjectId) : async [TypesAgents.AgentRun] {
     if (caller.isAnonymous()) {
       Runtime.trap("Unauthorized: Please sign in");
+    };
+    switch (projects.get(projectId)) {
+      case (?p) {
+        if (p.owner != caller) {
+          Runtime.trap("Unauthorized: Not your project");
+        };
+      };
+      case null Runtime.trap("Project not found");
     };
     let all = agentRuns.values() |> _.toArray();
     all.filter<TypesAgents.AgentRun>(func(r) { r.projectId == projectId });
