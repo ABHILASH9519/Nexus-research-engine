@@ -1,8 +1,4 @@
-import Array "mo:core/Array";
-import Float "mo:core/Float";
-import Nat "mo:core/Nat";
 import Text "mo:core/Text";
-import Time "mo:core/Time";
 import Analytics "../types/analytics";
 import Agents "../types/agents";
 
@@ -94,7 +90,7 @@ module {
           } else {
             (trend.avgAccuracy * trend.requestCount.toFloat()
               + s.accuracyScore * s.totalRequests.toFloat())
-              / Nat.toFloat(combinedRequests);
+              / combinedRequests.toFloat();
           };
           let updatedTrend : Analytics.ResearchTrend = {
             date = trend.date;
