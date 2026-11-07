@@ -1,4 +1,4 @@
-name: Frontend CI
+name: Application CI
 
 on:
   push:
@@ -32,3 +32,19 @@ jobs:
         run: pnpm --filter @caffeine/template-frontend typecheck
       - name: Build frontend
         run: pnpm --filter @caffeine/template-frontend build
+
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Set up Node.js for Mops
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Set up Mops
+        uses: dfinity/setup-mops@v1
+      - name: Install locked Motoko dependencies
+        run: mops install --locked
+      - name: Compile Motoko canisters
+        run: mops build --locked
