@@ -30,6 +30,8 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Type-check frontend
         run: pnpm --filter @caffeine/template-frontend typecheck
+      - name: Lint frontend sources
+        run: pnpm --filter @caffeine/template-frontend check
       - name: Build frontend
         run: pnpm --filter @caffeine/template-frontend build
 
