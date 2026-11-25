@@ -19,3 +19,24 @@ Illustrative workflow: Research interface → Frontend → Backend → Results. 
 
 
 Research-oriented frontend and backend workspace. See [design notes](DESIGN.md) and [source](src). Production integration is not verified.
+
+
+## Technical walkthrough
+
+```mermaid
+sequenceDiagram
+    participant P0 as Research UI
+    participant P1 as Frontend
+    participant P2 as Backend
+    participant P3 as Results
+    P0->>P1: Frontend
+    P1->>P2: Backend
+    P2->>P3: Results
+    P3-->>P0: Result or status
+```
+
+This sequence is a conceptual review aid, not a recorded execution trace. Consult the implementation and existing run instructions for supported behavior.
+
+![Last commit](https://img.shields.io/github/last-commit/ABHILASH9519/Nexus-research-engine) ![Open issues](https://img.shields.io/github/issues/ABHILASH9519/Nexus-research-engine)
+
+**Review focus:** frontend/backend organization and design system. This is a conceptual module sequence; end-to-end integration is unverified.
